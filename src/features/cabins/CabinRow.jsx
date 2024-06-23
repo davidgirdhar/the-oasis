@@ -1,0 +1,85 @@
+import styled from "styled-components";
+import { formatCurrency } from "../../utils/helpers";
+import { RxButton } from "react-icons/rx";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteCabin } from "../../services/apiCabins";
+import toast from "react-hot-toast";
+
+const TableRow = styled.div`
+  display: grid;
+  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
+  column-gap: 2.4rem;
+  align-items: center;
+  padding: 1.4rem 2.4rem;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--color-grey-100);
+  }
+`;
+
+const Img = styled.img`
+  display: block;
+  width: 6.4rem;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.5) translateX(-7px);
+`;
+
+const Cabin = styled.div`
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--color-grey-600);
+  font-family: "Sono";
+`;
+
+const Price = styled.div`
+  font-family: "Sono";
+  font-weight: 600;
+`;
+
+const Discount = styled.div`
+  font-family: "Sono";
+  font-weight: 500;
+  color: var(--color-green-700);
+`;
+function CabinRow({cabin}) {
+
+    const queryClient =  useQueryClient();
+
+    const {isloading, mutate} = useMutation({
+      mutationFn: (id) => deleteCabin(id),
+      onSuccess:()=> {
+
+        toast.success("query Updated Succcesfully")        
+        queryClient.invalidateQueries({
+          queryKey:["cabin"]
+        }); 
+      },      
+      onError:(err) => toast.error(err.message)
+
+    })
+
+    return (
+      <TableRow role="row">
+        <Img src={cabin.image}></Img>
+        <Cabin>{cabin.name}</Cabin>
+        <Cabin>Fits upto {cabin.maxCapacity} guests</Cabin>
+        <Price>{formatCurrency(cabin.regularPrice)}</Price>
+        <Discount>{formatCurrency(cabin.discount)}</Discount>
+        <button className=" bg-slate-300 px-1 py-2 rounded-md hover:bg-slate-400 font-semibold capitalize hover: transition-colors duration-300 focus:outline-none focus:ring focus:ring-offset-1 focus:ring-slate-800" onClick={()=>mutate(cabin.id)} disabled={isloading}>Delete</button>
+        
+        {/* <Cabin>cabin.name</Cabin> */}
+      </TableRow>
+    )
+};
+
+export default CabinRow;
+
+
+{/* <td>cab.name</td>
+//       <td>cab.description</td>
+//       <td>cab.image</td>
+//       <td>cab.strength</td>
+//       <td>cab.regularPrice</td>
+//       <td>cab.discount</td> */}
