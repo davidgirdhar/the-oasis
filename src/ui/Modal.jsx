@@ -1,4 +1,10 @@
+import { cloneElement, createContext, useContext, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { HiXMark } from "react-icons/hi2";
+import { TbBowlChopsticksFilled } from "react-icons/tb";
 import styled from "styled-components";
+import { ModuleCacheMap } from "vite/runtime";
+import { useCloseModal } from "../hooks/useCloseModal";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -48,3 +54,54 @@ const Button = styled.button`
     color: var(--color-grey-500);
   }
 `;
+
+const ModalContext = createContext();
+
+function Modal({children}) {
+  const [openName, setOpenName] = useState("");
+  
+  const close = () => setOpenName("");
+  const open = setOpenName;
+
+  
+  return (
+    <ModalContext.Provider value={{open, close, openName}}>{children}</ModalContext.Provider>
+  );
+}
+
+function Open({children, opens:openwithWindowName}) {
+  const {open} = useContext(ModalContext);
+
+  return cloneElement(children, {onClick: () => open(openwithWindowName)});
+}
+
+
+function Window({name, children}) {
+
+  const {openName, close} = useContext(ModalContext);
+
+  const ref = useCloseModal(close);
+
+
+  if(name !== openName) return null;
+
+  return createPortal(
+    <Overlay>
+      <StyledModal ref={ref}>
+      <Button onClick={close}><HiXMark></HiXMark></Button>
+      <div>
+        {cloneElement(children, {onCancel: close})}
+      </div>
+      </StyledModal>
+
+    </Overlay>,
+    document.body
+  );
+}
+
+Modal.Open = Open;
+Modal.Window = Window; 
+
+
+
+export default Modal;

@@ -1,4 +1,3 @@
-import { defaultShouldDehydrateMutation } from "@tanstack/react-query";
 import styled, { css } from "styled-components";
 
 const sizes = {
@@ -49,23 +48,18 @@ const variations = {
   `,
 };
 
+const Button = styled.button`
+  border: none;
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-sm);
 
-function Button({onClick, type="medium", variation="primary"}) {
+  ${(props) => sizes[props.size]}
+  ${(props) => variations[props.variation]}
+`;
 
-  let typeDist = {
-    "small":"px-[0.4rem] py-[0.8rem] uppercase text-[1.2rem] font-semibold text-center",
-    "medium":"px-[1.2rem] py-[1.6rem] uppercase text-[1.4rem] font-semibold text-center",
-    "large":"px-[1.2rem] py-[2.4rem] uppercase text-[1.6rem] font-semibold text-center",
-  }
-  let variationDist = {
-    "primary":"text-[#eef2ff] bg-[#6366f1] border-[#e5e7eb] hover:bg-[#4338ca]",
-    "secondary":"text-[#6b7280] bg-[#fff] border-[#e5e7eb] border-2 hover:bg-[#f9fafb]",
-    "danger":"text-[#fee2e2] bg-[#b91c1c] border-[#e5e7eb] hover:bg-[#991b1b]"
-  }
-
-  return(
-    <button onClick={onClick} className={` ${typeDist[type]} ${variationDist[variation]}`}></button>
-  )
+Button.defaultProps = {
+  variation: "primary",
+  size: "medium",
 };
 
 export default Button;

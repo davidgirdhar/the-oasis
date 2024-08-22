@@ -1,25 +1,22 @@
+import AddCabin from "../features/cabins/AddCabin";
 import CabinTable from "../features/cabins/CabinTable";
+import CabinTableOperations from "../features/cabins/CabinTableOperations";
+import CreateCabinForm from "../features/cabins/CreateCabinForm";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
-import Button from "../ui/Button";
-import { useState } from "react";
-import CreateCabinForm from "../features/cabins/CreateCabinForm";
 function Cabins() {
-  const [showForm, setShowForm] = useState(false);
   return (
-
     <>
-    <Row type="horizontal">
-      <Heading as="h1"> All cabins</Heading>
-      <p>Filter/Sort</p>
-    </Row>
-    <Row>
-      <CabinTable>        
-      </CabinTable>
-      <Button onClick={()=>setShowForm(!showForm)}>Add Cabin</Button>
-      {showForm && <CreateCabinForm></CreateCabinForm>}
-    </Row>
+      <Row type="horizontal">
+        <Heading as="h1"> All cabins</Heading>
+        <p><CabinTableOperations></CabinTableOperations></p>
+      </Row>
+      <Row>
+        <CabinTable></CabinTable>
+        <AddCabin></AddCabin>
+      </Row>      
     </>
+
   );
 }
 

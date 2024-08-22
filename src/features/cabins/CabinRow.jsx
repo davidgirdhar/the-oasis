@@ -1,21 +1,28 @@
 import styled from "styled-components";
 import { formatCurrency } from "../../utils/helpers";
 import { RxButton } from "react-icons/rx";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteCabin } from "../../services/apiCabins";
-import toast from "react-hot-toast";
+import { useState } from "react";
+import CreateCabinForm from "./CreateCabinForm";
+import { useDeleteCabin } from "./useDeleteCabin";
+import { HiPencil, HiTrash } from "react-icons/hi";
+import { HiSquare2Stack } from "react-icons/hi2";
+import { useCreateCabin } from "./useCreateCabin";
+import Modal from "../../ui/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import Table from "../../ui/Table";
+import Menus from "../../ui/Menus";
 
-const TableRow = styled.div`
-  display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-  column-gap: 2.4rem;
-  align-items: center;
-  padding: 1.4rem 2.4rem;
+// const TableRow = styled.div`
+//   display: grid;
+//   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 0.2fr 0.2fr 0.2fr;
+//   column-gap: 1.2rem;
+//   align-items: center;
+//   padding: 1.4rem 2.4rem;
 
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-`;
+//   &:not(:last-child) {
+//     border-bottom: 1px solid var(--color-grey-100);
+//   }
+// `;
 
 const Img = styled.img`
   display: block;
@@ -44,33 +51,64 @@ const Discount = styled.div`
   color: var(--color-green-700);
 `;
 function CabinRow({cabin}) {
+    const [showForm, setShowForm] = useState(false);
+    const {isloading, deleteCabin} = useDeleteCabin();
+    const {isCreating, createCabin} = useCreateCabin();
 
-    const queryClient =  useQueryClient();
 
-    const {isloading, mutate} = useMutation({
-      mutationFn: (id) => deleteCabin(id),
-      onSuccess:()=> {
+    function handleDuplicate() {
 
-        toast.success("query Updated Succcesfully")        
-        queryClient.invalidateQueries({
-          queryKey:["cabin"]
-        }); 
-      },      
-      onError:(err) => toast.error(err.message)
+      createCabin({
+        name:`copy of ${cabin.name}`,
+        maxCapacity:cabin.maxCapacity,
+        regularPrice:cabin.regularPrice,
+        discount:cabin.discount,
+        image:cabin.image,
+        id:+(cabin.id) + Math.round(Math.random()*100), //random,
+        description:cabin.description
+      })
 
-    })
+    }
 
     return (
-      <TableRow role="row">
-        <Img src={cabin.image}></Img>
-        <Cabin>{cabin.name}</Cabin>
-        <Cabin>Fits upto {cabin.maxCapacity} guests</Cabin>
-        <Price>{formatCurrency(cabin.regularPrice)}</Price>
-        <Discount>{formatCurrency(cabin.discount)}</Discount>
-        <button className=" bg-slate-300 px-1 py-2 rounded-md hover:bg-slate-400 font-semibold capitalize hover: transition-colors duration-300 focus:outline-none focus:ring focus:ring-offset-1 focus:ring-slate-800" onClick={()=>mutate(cabin.id)} disabled={isloading}>Delete</button>
+        <Table.Row>
+          <Img src={cabin.image}></Img>
+          <Cabin>{cabin.name}</Cabin>
+          <Cabin>Fits upto {cabin.maxCapacity} guests</Cabin>
+          <Price>{formatCurrency(cabin.regularPrice)}</Price>
+          {cabin.discount ? <Discount>{formatCurrency(cabin.discount)}</Discount> : <span>&mdash;</span>}
+          
+          {/* <button disabled={isCreating} onClick={()=> handleDuplicate()} className="bg-slate-300 rounded-md p-2 w-10 h-10 flex items-center justify-center hover:bg-slate-400 transition-colors duration-300 focus:outline-none focus:ring focus:ring-offset-1 focus:ring-slate-800"><HiSquare2Stack/></button> */}
+          {/* onClick={()=> setShowForm((show) => !show)} */}
+          <Modal>
+
+          <Menus.Menu>
+            <Menus.Toggle id={cabin.id}></Menus.Toggle>
+            <Menus.List id={cabin.id}>
+            <Menus.Button onClick={()=> handleDuplicate()} icon={<HiSquare2Stack/>}>Duplicate</Menus.Button>
+            <Modal.Open opens="edit">
+
+              <Menus.Button icon={<HiPencil/>}>Edit</Menus.Button>
+            </Modal.Open>
+            <Modal.Open opens="delete">             
+              <Menus.Button icon={<HiTrash></HiTrash>}>Delete</Menus.Button>
+            </Modal.Open>
+            
+            </Menus.List>
+          </Menus.Menu>
+
+          <Modal.Window name="edit">
+            <CreateCabinForm CabintoEdit={cabin}></CreateCabinForm>
+          </Modal.Window>
+          
+          <Modal.Window name="delete">
+            <ConfirmDelete resourceName="cabins" disabled={isloading} onConfirm={()=>deleteCabin(cabin.id)}></ConfirmDelete>
+          </Modal.Window>
+
+          </Modal>
+          
+        </Table.Row>
         
-        {/* <Cabin>cabin.name</Cabin> */}
-      </TableRow>
     )
 };
 

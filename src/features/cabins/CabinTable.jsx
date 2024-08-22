@@ -3,15 +3,11 @@ import styled from "styled-components";
 import {fetchCabins} from "../../services/apiCabins";
 import Spinner from "../../ui/Spinner";
 import CabinRow from "./CabinRow";
+import { useCabin } from "./useCabin";
+import Table from "../../ui/Table";
+import Menus from "../../ui/Menus";
+import { useSearchParams } from "react-router-dom";
 
-const Table = styled.div`
-  border: 1px solid var(--color-grey-200);
-
-  font-size: 1.4rem;
-  background-color: var(--color-grey-0);
-  border-radius: 7px;
-  overflow: hidden;
-`;
 
 const TableHeader = styled.header`
   display: grid;
@@ -28,13 +24,60 @@ const TableHeader = styled.header`
   padding: 1.6rem 2.4rem;
 `;
 
+
+const dynamicCompare = (property, order = 'asc') => {
+  return (a, b) => {
+      if (a[property] < b[property]) {
+          return order === 'asc' ? -1 : 1;
+      }
+      if (a[property] > b[property]) {
+          return order === 'asc' ? 1 : -1;
+      }
+      return 0;
+  };
+};
+
+
+
+
+
 function CabinTable() {
 
-  const {isPending, data:cabins, error} = useQuery({
-    queryKey:['cabin'], // handle key
-    queryFn: fetchCabins
-  });
-  console.log('Cabins',cabins);
+  const {isPending, cabins} = useCabin();
+  const [searchParams] = useSearchParams();
+
+  const filterValue = searchParams.get("discount") || "all";
+  const SortValue = searchParams.get("sortBy") || "name-asc";
+
+  console.log('filterValue',filterValue);
+  let filterCabins = cabins;
+
+
+  if(!isPending){
+    switch (filterValue) {
+      case "all":
+        filterCabins = cabins;
+        break;
+      case "no-discount":
+        filterCabins = cabins.filter((cab)=>cab.discount === 0);
+        break;
+      case "with-discount":
+        filterCabins = cabins.filter((cab)=>cab.discount > 0);
+        break;
+      default:
+        filterCabins = cabins;
+        break;
+  
+    }
+
+    const [property,sortOrder] = SortValue.split('-');
+    filterCabins.sort(dynamicCompare(property, sortOrder));
+    
+  }
+
+  console.log("filterCabins",filterCabins);
+
+
 
   if(isPending){
     return (
@@ -42,25 +85,28 @@ function CabinTable() {
     )
   }
 
-  return (<Table role="table">
-  <TableHeader role="row">
-    <div></div>
-    <div>Cabin Name</div>
-    {/* <div>Description</div> */}
-    <div>Max Capacity</div>
-    <div>Regular Price</div>
-    <div>Discount</div>
-    <div></div>
+  return (
+    <Menus>
+      <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 0.1fr 0.1fr 0.1fr">
+        <Table.Header>
+          <div></div>
+          <div>Cabin Name</div>
+          {/* <div>Description</div> */}
+          <div>Max Capacity</div>
+          <div>Regular Price</div>
+          <div>Discount</div>
+          <div></div>
 
-  </TableHeader>
-  {
-    cabins.map((cab)=>
-    <CabinRow cabin={cab} key={cab.id}></CabinRow>
-    
-    )
-  }
-    
-  </Table>)
+        </Table.Header>
+        {
+
+          <Table.Body data={filterCabins} render={(cab)=>
+          (<CabinRow cabin={cab} key={cab.id}></CabinRow>)} ></Table.Body>
+        }
+          
+      </Table>
+    </Menus>
+  )
 }
 
 

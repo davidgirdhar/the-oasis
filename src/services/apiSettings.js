@@ -1,7 +1,8 @@
-import supabase from "./supabase";
+// import supabase from "./supabase";
+import supabase from "./supabaseClient";
 
 export async function getSettings() {
-  const { data, error } = await supabase.from("settings").select("*").single();
+  const { data, error } = await supabase.from("settings").select("*").single(); // single -> takes one single object instead of one array 
 
   if (error) {
     console.error(error);
