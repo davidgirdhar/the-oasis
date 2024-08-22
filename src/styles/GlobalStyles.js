@@ -8,7 +8,7 @@ const GlobalStyles = createGlobalStyle`
   /* Indigo */
   /* Grey */
 
-  &, &.light-mode{
+  &, &.light{
 
     --color-grey-0: #fff;
     --color-grey-50: #f9fafb;
