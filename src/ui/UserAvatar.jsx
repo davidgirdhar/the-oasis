@@ -28,7 +28,7 @@ function UserAvatar(){
   console.log("user in avatar",user);
   const {fullName, avatar} = user.user_metadata;
   console.log("avatar",avatar);
-  let avatarName = avatar.replace(".jpg", "");
+  let avatarName = avatar?.replace(".jpg", "");
   return(
     <StyledUserAvatar>
       <Avatar src={avatarName} alt={`${fullName}`}>

@@ -8,6 +8,5 @@ export function useSettings() {
         queryKey:['setting'], // handle key
         queryFn: getSettings
     });
-    console.log('Cabins',settings);
     return {isPending, settings, error}
 }   

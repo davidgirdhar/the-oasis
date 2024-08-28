@@ -43,9 +43,7 @@ export function useBooking() {
         })
     }
         
-    console.log('Cabins',bookings);
     return {isPending, bookings, count, error}    
-      
 }
 
 

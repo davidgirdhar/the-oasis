@@ -6,7 +6,6 @@ export async function fetchCabins() {
     let { data: Cabins, error } = await supabase.from('Cabins')
     .select('*');
     if(error){
-        console.log("cabins can't be loaded", error);
         throw new Error("cabins can't be loaded");
     }
     return Cabins;
