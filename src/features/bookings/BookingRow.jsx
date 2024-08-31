@@ -7,7 +7,6 @@ import Table from "../../ui/Table";
 import { formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
 import Menus from "../../ui/Menus";
-import { WiMoonWaningGibbous1 } from "react-icons/wi";
 import { HiArrowDownOnSquare, HiArrowUpOnSquare, HiEye, HiTrash } from "react-icons/hi2";
 import { useNavigate } from "react-router";
 import useCheckout from "../check-in-out/useCheckout";

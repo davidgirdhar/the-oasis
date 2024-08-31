@@ -1,5 +1,4 @@
-import { queryOptions } from "@tanstack/react-query";
-import supabase, { supabaseUrl } from "./supabaseClient";
+ import supabase, { supabaseUrl } from "./supabaseClient";
 
 export async function fetchCabins() {
     console.log("fetch cabins");

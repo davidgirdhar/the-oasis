@@ -1,4 +1,3 @@
-import { FiUserX } from "react-icons/fi";
 import supabase from "./supabaseClient";
 import { supabaseUrl } from "./supabaseClient";
 export async function signupApi({email, fullname, password}) {

@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
-import { HiEllipsisHorizontal, HiEllipsisVertical } from "react-icons/hi2";
+import {HiEllipsisVertical } from "react-icons/hi2";
 import styled from "styled-components";
 import { useCloseModal } from "../hooks/useCloseModal";
 

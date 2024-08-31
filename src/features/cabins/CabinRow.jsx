@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { formatCurrency } from "../../utils/helpers";
-import { RxButton } from "react-icons/rx";
 import { useState } from "react";
 import CreateCabinForm from "./CreateCabinForm";
 import { useDeleteCabin } from "./useDeleteCabin";
@@ -51,7 +50,6 @@ const Discount = styled.div`
   color: var(--color-green-700);
 `;
 function CabinRow({cabin}) {
-    const [showForm, setShowForm] = useState(false);
     const {isloading, deleteCabin} = useDeleteCabin();
     const {isCreating, createCabin} = useCreateCabin();
 

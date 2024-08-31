@@ -1,9 +1,7 @@
-import { cloneElement, createContext, useContext, useEffect, useRef, useState } from "react";
+import { cloneElement, createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import { HiXMark } from "react-icons/hi2";
-import { TbBowlChopsticksFilled } from "react-icons/tb";
 import styled from "styled-components";
-import { ModuleCacheMap } from "vite/runtime";
 import { useCloseModal } from "../hooks/useCloseModal";
 
 const StyledModal = styled.div`
