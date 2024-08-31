@@ -13,11 +13,9 @@ const StyledErrorFallback = styled.main`
 `;
 
 const Box = styled.div`
-  /* Box */
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
   border-radius: var(--border-radius-md);
-
   padding: 4.8rem;
   flex: 0 1 96rem;
   text-align: center;
@@ -33,22 +31,28 @@ const Box = styled.div`
   }
 `;
 
+function ErrorFallback({ error, onReset }) {
 
-function ErrorFallback({error, resetErrorBoundary}) {
-  return(
+
+  function handleErrorClick() {
+      console.log("handleErrorClick",onReset,error);
+      onReset();
+  }
+  
+  return (
     <>
-    <GlobalStyles></GlobalStyles>
-    <StyledErrorFallback>
-    <Box>
-
-      <Heading as="h1">Something went Wrong🫤</Heading>
-      <p>{error?.message}</p>
-      <Button size="large" onClick={resetErrorBoundary}>Try Again</Button>
-    </Box>
-    </StyledErrorFallback>
-
+      <GlobalStyles />
+      <StyledErrorFallback>
+        <Box>
+          <Heading as="h1">Something went wrong 🫤</Heading>
+          <p>{error?.message}</p>
+          <Button size="large" onClick={handleErrorClick}>
+            Try Again
+          </Button>
+        </Box>
+      </StyledErrorFallback>
     </>
-  )
-};
+  );
+}
 
 export default ErrorFallback;

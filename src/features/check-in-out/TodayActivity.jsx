@@ -54,7 +54,7 @@ function Today() {
       <Row type="horizontal">
         <Heading as="h2">Today's Activity</Heading>
       </Row>
-      {todayData.length === 0 ? <NoActivity></NoActivity> : <TodayList>{todayData.map((activity)=><TodayItem key={activity.id} activity={activity}></TodayItem>)}</TodayList>}
+      {todayData.length === 0 ? <NoActivity>No Activity Today</NoActivity> : <TodayList>{todayData.map((activity)=><TodayItem key={activity.id} activity={activity}></TodayItem>)}</TodayList>}
     </StyledToday>
   );
 }

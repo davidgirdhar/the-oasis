@@ -11,9 +11,12 @@ function BookingTable() {
   const {isPending, bookings, count} = useBooking();
   console.log('bookings',bookings);
   
-  if (bookings.length === 0) return (<Empty resource="Bookings"></Empty>)
   if(isPending) return (<Spinner></Spinner>)
+  
+  
 
+    
+  if (bookings?.length === 0) return (<Empty resource="Bookings"></Empty>)
   return (
     <Menus>
       <Table columns="0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem">

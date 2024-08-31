@@ -7,7 +7,7 @@ function Sidebar() {
             {/* Sidebar */}
             <Logo></Logo>
             <MainNav></MainNav>
-            <Uploader></Uploader>
+            {/* <Uploader></Uploader> */}
         </div>
     )
 }

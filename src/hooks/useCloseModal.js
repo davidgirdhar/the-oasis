@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 
-export function useCloseModal(close) {
+export function useCloseModal(close, listenCapturing=true) {
+    console.log("listenCapturing",listenCapturing);
+  
     const ref = useRef();
     useEffect(function () {
         function handleClick(e) {
@@ -8,11 +10,11 @@ export function useCloseModal(close) {
             close();
           }
         }
-        document.addEventListener("click",handleClick, true);
+        document.addEventListener("click",handleClick, listenCapturing);
     
-        return ()=> document.removeEventListener("click", handleClick, true);
+        return ()=> document.removeEventListener("click", handleClick, listenCapturing);
     
-    },[close]);
+    },[close, listenCapturing]);
 
     return ref;
 

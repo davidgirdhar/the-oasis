@@ -1,7 +1,7 @@
 import { HiOutlineBriefcase, HiOutlineCalendar, HiOutlineCash, HiOutlineChartBar } from "react-icons/hi";
 import Stat from "./Stat";
 import { formatCurrency } from "../../utils/helpers";
-import { HiOutlineChartPie } from "react-icons/hi2";
+// import { HiOutlineChartPie } from "react-icons/hi2";
 
 function Stats({bookings, confirmedStays, numDays, numCabins}) {
     const numBookings = bookings.length;

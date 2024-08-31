@@ -91,7 +91,7 @@ function CabinRow({cabin}) {
               <Menus.Button icon={<HiPencil/>}>Edit</Menus.Button>
             </Modal.Open>
             <Modal.Open opens="delete">             
-              <Menus.Button icon={<HiTrash></HiTrash>}>Delete</Menus.Button>
+              <Menus.Button disabled={isCreating} icon={<HiTrash></HiTrash>}>Delete</Menus.Button>
             </Modal.Open>
             
             </Menus.List>
